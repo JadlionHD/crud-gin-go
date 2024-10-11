@@ -1,0 +1,12 @@
+{
+  "id": 4,
+  "title": "The secret beneath the lake",
+  "body": "Everyone knew the legends about the lake, but no one ever took them seriously. It wasn’t until I decided to dive beneath the water's surface that I discovered the truth. There was something down there, something that had been hidden for centuries.",
+  "tags": ["adventure", "mystery", "legends"],
+  "reactions": {
+    "likes": 215,
+    "dislikes": 12
+  },
+  "views": 500,
+  "userId": 110
+}
