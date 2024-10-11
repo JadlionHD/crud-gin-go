@@ -1,5 +1,11 @@
 package controllers
 
+import (
+	"fmt"
+
+	"github.com/JadlionHD/crud-gin-go/utils"
+)
+
 type Post struct {
 	ID        int           `json:"id"`
 	Title     string        `json:"title"`
@@ -16,4 +22,14 @@ type PostReactions struct {
 }
 
 type CreatePostInput struct {
+}
+
+func GetPostDummies(id string) (*Post, error) {
+	result, err := utils.ReadJSON[Post](fmt.Sprintf("dummies/posts/%s.json", id))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
 }
