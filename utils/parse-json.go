@@ -26,6 +26,10 @@ func ReadJSON[T any](path string) (*T, error) {
 	return result, nil
 }
 
-func WriteJSON[T any](*T, error) {
+func WriteJSON(filePath string, data any) bool {
+	file, err := json.Marshal(data)
 
+	os.WriteFile(filePath, file, 0644)
+
+	return err == nil
 }
