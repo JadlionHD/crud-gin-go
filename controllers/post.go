@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/JadlionHD/crud-gin-go/utils"
@@ -21,9 +22,6 @@ type PostReactions struct {
 	Dislikes int `json:"dislikes"`
 }
 
-type CreatePostInput struct {
-}
-
 func GetPostDummies(id string) (*Post, error) {
 	result, err := utils.ReadJSON[Post](fmt.Sprintf("dummies/posts/%s.json", id))
 
@@ -32,4 +30,26 @@ func GetPostDummies(id string) (*Post, error) {
 	}
 
 	return result, nil
+}
+
+func CreateDummies(id int, title string, body string, tags []string) error {
+	data := Post{
+		ID:    id,
+		Title: title,
+		Body:  body,
+		Tags:  tags,
+		Reactions: PostReactions{
+			Likes:    0,
+			Dislikes: 0,
+		},
+		Views:  0,
+		UserID: 0,
+	}
+
+	written := utils.WriteJSON(fmt.Sprintf("dummies/posts/%d.json", id), data)
+	if !written {
+		return errors.New("file not written")
+	}
+
+	return nil
 }
