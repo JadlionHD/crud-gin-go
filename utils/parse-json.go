@@ -9,19 +9,29 @@ import (
 	"github.com/JadlionHD/crud-gin-go/controllers"
 )
 
-func GetDummies(id string) (controllers.Post, error) {
-	jsonFile, err := os.Open(fmt.Sprintf("dummies/posts/%s.json", id))
+func GetDummies(id string) (*controllers.Post, error) {
+	result, err := ReadJSON[controllers.Post](fmt.Sprintf("dummies/posts/%s.json", id))
+
+	if err != nil {
+		return nil, err
+	}
+
+	return result, nil
+}
+
+func ReadJSON[T any](path string) (*T, error) {
+	jsonFile, err := os.Open(path)
 
 	if err != nil {
 		fmt.Println(err)
-		return controllers.Post{}, err
+		return nil, err
 	}
 
 	defer jsonFile.Close()
 
 	byteValue, _ := io.ReadAll(jsonFile)
 
-	var result controllers.Post
+	var result *T
 
 	json.Unmarshal(byteValue, &result)
 
