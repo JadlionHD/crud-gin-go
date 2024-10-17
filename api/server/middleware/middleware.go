@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"fmt"
 	"net/http"
 
+	"github.com/JadlionHD/crud-gin-go/api/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,17 +17,27 @@ func AuthMiddleware() gin.HandlerFunc {
 				"message": err.Error(),
 			})
 			c.Abort()
+			return
 		}
 
-		fmt.Println(token)
-		c.Next()
-	}
-}
+		jwtToken, err := utils.TokenValidate(token)
 
-func unauthorized() func(c *gin.Context, code int, message string) {
-	return func(c *gin.Context, code int, message string) {
-		c.JSON(code, gin.H{
-			"message": message,
-		})
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": err.Error(),
+			})
+			c.Abort()
+			return
+		}
+
+		if !jwtToken.Valid {
+			c.JSON(http.StatusUnauthorized, gin.H{
+				"message": "Unauthorized",
+			})
+			c.Abort()
+			return
+		}
+
+		c.Next()
 	}
 }
