@@ -5,8 +5,13 @@ import (
 
 	"github.com/JadlionHD/crud-gin-go/api/server/middleware"
 	"github.com/JadlionHD/crud-gin-go/api/server/routes"
+	"github.com/JadlionHD/crud-gin-go/internal/database"
 	"github.com/gin-gonic/gin"
 )
+
+func init() {
+	database.InitDatabase()
+}
 
 func main() {
 	router := gin.Default()
