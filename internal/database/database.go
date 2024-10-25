@@ -1,30 +1,11 @@
 package database
 
 import (
+	"github.com/JadlionHD/crud-gin-go/internal/database/migration"
+	"github.com/JadlionHD/crud-gin-go/internal/database/seeds"
 	"github.com/glebarez/sqlite"
 	"gorm.io/gorm"
 )
-
-type Product struct {
-	gorm.Model
-	Code  string
-	Price uint
-}
-
-type PostDB struct {
-	gorm.Model
-	Title     string
-	Body      string
-	Tags      []string        `gorm:"type:text[]"`
-	Reactions *PostReactionDB `gorm:"embedded"`
-	Views     uint
-	UserID    uint
-}
-
-type PostReactionDB struct {
-	Likes    uint
-	Dislikes uint
-}
 
 func InitDatabase() {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
@@ -32,7 +13,10 @@ func InitDatabase() {
 		panic("failed to connect database")
 	}
 
-	db.AutoMigrate(&PostDB{})
+	migration.MigrateTable(db)
+	seeds.Seed(db)
+
+	// db.AutoMigrate(&PostDB{})
 	// db.Create(&Product{Code: "D42", Price: 100})
 
 	// Read
