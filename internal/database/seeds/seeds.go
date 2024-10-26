@@ -1,7 +1,6 @@
 package seeds
 
 import (
-	"errors"
 	"os"
 
 	"github.com/JadlionHD/crud-gin-go/internal/database/migration"
@@ -9,9 +8,8 @@ import (
 )
 
 func Seed(db *gorm.DB) bool {
-	_, err := os.OpenFile("test.db")
-	if errors.Is(err, os.ErrNotExist) {
-		// handle the case where the file doesn't exist
+	if _, err := os.Stat("test.db"); err == nil {
+		return false
 	}
 
 	posts := []*migration.PostDB{
