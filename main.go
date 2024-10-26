@@ -49,10 +49,12 @@ func main() {
 	// 	})
 	// })
 
-	router.GET("/posts/:id", routes.GetPost)
-	router.POST("/posts", routes.CreatePost)
-	router.DELETE("/posts/:id", routes.DeletePost)
-	router.PUT("/posts/:id", routes.UpdatePost)
+	api := router.Group("/api", middleware.AuthMiddleware())
+
+	api.GET("/posts/:id", routes.GetPost)
+	api.POST("/posts", routes.CreatePost)
+	api.DELETE("/posts/:id", routes.DeletePost)
+	api.PUT("/posts/:id", routes.UpdatePost)
 
 	router.Run("localhost:8080")
 }
